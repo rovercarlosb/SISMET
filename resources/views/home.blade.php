@@ -29,7 +29,7 @@
                             <div class="footer">
                                 <hr />
                                 <div class="text-center">
-                                     <h3>Sistema experto de diagnóstico de Enfermedades de Transmision por Vectores</h3>
+                                     <h3>SISMET herramienta tecnologica destinado para el control y seguimiento de enfermedades tropicales</h3>
                                 </div>
                             </div>
                         </div>

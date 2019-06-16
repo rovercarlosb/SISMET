@@ -116,7 +116,7 @@
                                 </label><br><br>
                                 <div class="input-group col-md-9" style="margin-left: 10px">
                                     <div class="col-md-10"><input id="sintoma" name="sintoma" class="marco typeahead form-control" type="text"></div>
-                                    <div class="col-md-2"><button class="btn btn-success" id="sintomaAdd"><i class="fa fa-check"></i></button></div>
+                                    <div class="col-md-2" id="data-sim" data-url="{{url('factores')}}"><button class="btn btn-success" id="sintomaAdd"><i class="fa fa-check"></i></button></div>
                                 </div>
 
                             </div>
@@ -126,7 +126,7 @@
                                 </label><br><br>
                                 <div class="input-group col-md-9">
                                     <div class="col-md-10"><input id="antecedente" name="antecedente" class="marco typeahead form-control" type="text"></div>
-                                    <div class="col-md-2"><button class="btn btn-success" id="antecedenteAdd"><i class="fa fa-check"></i></button></div>
+                                    <div class="col-md-2" id="data-ant" data-url="{{url('factores')}}"><button class="btn btn-success" id="antecedenteAdd"><i class="fa fa-check"></i></button></div>
                                 </div>
 
                             </div>
@@ -136,7 +136,7 @@
                                 </label><br><br>
                                 <div class="input-group col-md-9">
                                     <div class="col-md-10"><input id="otro" name="otro" class="marco typeahead form-control" type="text"></div>
-                                    <div class="col-md-2"><button class="btn btn-success" id="otroAdd"><i class="fa fa-check"></i></button></div>
+                                    <div class="col-md-2" id="data-otro" data-url="{{url('factores')}}"><button class="btn btn-success" id="otroAdd"><i class="fa fa-check"></i></button></div>
                                 </div>
                             </div>
                         </div>
@@ -163,7 +163,7 @@
                             <div class="col-md-4 col-md-offset-1">
                                 <div class="panel panel-info">
                                     <div class="panel-heading text-center" style="font-size: 16px; font-weight: bold">Enfermedad</div>
-                                    <div class="panel-body text-center "  id="answer" >
+                                    <div class="panel-body text-center "  id="answer" data-url="{{url('diagnostico/enfermedades')}}">
 
                                     </div>
                                 </div>

@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/img/favicon.png') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>Expert Diagnostic</title>
+    <title>SISMET</title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -26,7 +26,7 @@
 
 
     <!--  Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
     <link href="{{ asset('assets/css/themify-icons.css') }}" rel="stylesheet">
 
@@ -83,7 +83,7 @@
         <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="#" class="simple-text">
-                    Expert Diagnostic
+                    SISMET
                 </a>
             </div>
 
@@ -200,7 +200,7 @@
                     </ul>
                 </nav>
                 <div class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script>, desarrollado con <i class="fa fa-heart heart"></i> por <a href="#">Enigmatic Team</a>
+                    &copy; <script>document.write(new Date().getFullYear())</script><a href=""></a>
                 </div>
             </div>
         </footer>
@@ -210,6 +210,7 @@
 <!--   Core JS Files   -->
 <script src="{{ asset('assets/js/jquery-1.10.2.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/axios.js') }}" type="text/javascript"></script>
 
 <!--  Checkbox, Radio & Switch Plugins -->
 <script src="{{ asset('assets/js/bootstrap-checkbox-radio.js') }}"></script>
@@ -225,6 +226,19 @@
 
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 <script src="{{ asset('assets/js/demo.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
+<script>
+    var route = {!! json_encode(url('/')) !!}
+    /*setInterval(() => {
+        var url = route + '/validate/auth';
+        axios.get(url).then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error)
+            console.log(error.response)
+        })
+    }, 3000)*/
+</script>
 
 @section('scripts')
     <script>
@@ -233,7 +247,7 @@
 
         $.notify({
             icon: 'ti-gift',
-            message: "Bienvenido a <b>Expert Diagnostic</b> - su sistema experto de diagnóstico médico !"
+            message: "Bienvenido a <b>SISMET</b> - Sistema medico de enfermedades tropicales !"
 
         }, {
             type: 'success',

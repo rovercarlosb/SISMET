@@ -9,7 +9,7 @@ function principal(){
     $('#addRecomendationTable').on('click',addRecomendationTable);
     $('body').on('click','[data-takeout]',takeout);
     $.ajax({
-        url: '../../../public/recomendaciones/nombres',
+        url: $('#recomendacion').attr('data-url'),
         method: 'GET'
     }).done(function(data) {
         loadAutoCompleteLocations(data);
@@ -42,7 +42,7 @@ function addRecomendationTable(){
     }
 
     $.ajax({
-        url: '../../../public/recomendaciones/'+recomendation,
+        url: $('#modalRecomendation').attr('data-url')+'/'+recomendation,
         method: 'GET'
     }).done(function(data) {
         if( data.success == 'true' )

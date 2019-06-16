@@ -71,7 +71,7 @@ function updateMedication() {
 
 function registerMedication() {
     event.preventDefault();
-    var url =  '../public/medicamentos/registrar';
+    var url =  $('#formRegistrar').attr('action');
     $.ajax({
         url: url,
         data: new FormData(this),

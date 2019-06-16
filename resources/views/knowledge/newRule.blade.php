@@ -169,7 +169,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" id="recomendacion" data-url="{{url('recomendaciones/nombres')}}">
                                 <label class="control-label col-md-3" for="peso">
                                     Peso:
                                 </label><br><br>
@@ -370,7 +370,7 @@
         </div>
     </div>
 
-    <div id="modalRecomendation" class="modal fade in">
+    <div id="modalRecomendation" class="modal fade in" data-url="{{url('recomendaciones')}}">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">

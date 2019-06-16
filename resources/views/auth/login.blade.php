@@ -10,7 +10,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url('/home') }}">Expert Diagnostic</a>
+                <a class="navbar-brand" href="{{ url('/home') }}">SISMET</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -78,7 +78,7 @@
             <footer class="footer footer-transparent">
                 <div class="container">
                     <div class="copyright">
-                        &copy; <script>document.write(new Date().getFullYear())</script>, desarrollado por <a href="#">Enigmatic Team</a>
+                        &copy; <script>document.write(new Date().getFullYear())</script><a href="#"></a>
                     </div>
                 </div>
             </footer>

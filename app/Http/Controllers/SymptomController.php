@@ -29,10 +29,10 @@ class SymptomController extends Controller
      */
     public function index()
     {
-        $otros = Factor::where('type', 'O')->orderBy('id', 'asc')->paginate(3);
-        $factores = Factor::where('type', 'A')->orderBy('id', 'asc')->paginate(3);
-        $sintomas = Factor::where('type', 'S')->orderBy('id', 'asc')->paginate(3);
-
+        $otros = Factor::where('type', 'O')->orderBy('id', 'asc')->paginate(5);
+        $factores = Factor::where('type', 'A')->orderBy('id', 'asc')->paginate(5);
+        $sintomas = Factor::where('type', 'S')->orderBy('id', 'asc')->paginate(5);
+        //dd($factores);
         return view('symptom.symptom')->with(compact('sintomas', 'factores', 'otros'));
     }
 

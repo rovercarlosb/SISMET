@@ -5,7 +5,7 @@ Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index');
 
 Route::group(['middleware' => 'auth'], function () {
-
+    Route::get('/validate/auth', 'Auth\AuthController@validate_session');
 // Patient routes
     Route::get('/pacientes', 'PatientController@index');
     Route::post('/pacientes/registrar', 'PatientController@store');
@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
 // General Factor routes
     Route::get('/factor/nombre/{sintoma}', 'SymptomController@getSymptom');
     Route::get('diagnosis/patient/{id}', 'PatientController@getDiagnosis');
+
+    Route::get('reporte/diagnostico/{id}', 'PatientController@reportePDF')->name('diagnostico.pdf');
 
 
 // Antecedente routes

@@ -182,7 +182,7 @@ function show_diseases() {
     var $diseases = $('#enfermedades');
 
     $.ajax({
-        url: '../public/diagnostico/enfermedades',
+        url: $('#answer').attr('url');,
         data: {symptoms: JSON.stringify(symptoms)},
         method: 'GET'
     }).done(function (data) {

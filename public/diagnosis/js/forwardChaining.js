@@ -50,7 +50,7 @@ function sintomaAdd()
     }
 
     $.ajax({
-        url: '../public/factores/'+sintoma,
+        url: $('#data-sim').attr('data-url')+'/'+sintoma,
         method: 'GET'
     }).done(function(data) {
         if( data.success == 'true' )
@@ -80,7 +80,7 @@ function antecedenteAdd()
     }
 
     $.ajax({
-        url: '../public/factores/'+antecedente,
+        url: $('#data-ant').attr('data-url')+'/'+antecedente,
         method: 'GET'
     }).done(function(data) {
         if( data.success == 'true' )
@@ -110,7 +110,7 @@ function otroAdd()
     }
 
     $.ajax({
-        url: '../public/factores/'+otro,
+        url: $('#data-otro').attr('data-url')+'/'+otro,
         method: 'GET'
     }).done(function(data) {
         if( data.success == 'true' )
@@ -190,21 +190,18 @@ function forwardChaining()
 
     var timer = $('#forwardChaining').attr('data-timer');
     var data = JSON.stringify(factors);
-
-    $.ajax({
-        url: '../public/diagnostico/forwardChaining',
-        method: 'POST',
-        data:{factors:data,timer:timer},
-        dataType:'json',
-        headers : {
-            'X-CSRF-TOKEN' : $('#_token').val()
+    console.log(factors);
+    console.log(data);
+    var url = route + '/diagnostico/forwardChaining'
+    axios.post(url, {factors:data,timer:timer}).then(response => {
+        console.log(response);
+        if(response.status == '401'){
+            alert('La sesión se ha vencido, por favor recargue la pagina!.')
         }
-    }).done(function(data) {
-        if( data.success == 'true' )
-        {
+        if(response.data.success == 'true' ){
           ids   = [];
           names = [];
-            $.each(data.data,function(key,value){
+            $.each(response.data.data,function(key,value){
                 // Possible diseases
                 ids.push(value.id);
                 names.push(value.percentage+'%'+value.disease_name);
@@ -212,8 +209,12 @@ function forwardChaining()
                 diagnose();
             })
 
-        }else
-            showmessage(data.message,1);
+        }else showmessage(response.data.message, 1);
+    }).catch(error => {
+        console.log(error)
+        if(error.response.status == '401'){
+            alert('La sesión se ha vencido, por favor recargue la pagina!.')
+        }
     });
 }
 
@@ -227,12 +228,40 @@ Object.size = function(obj) {
     }
     return size;
 };
-
+let cont = 0;
 function diagnose() {
     var diseaseFactors = [];
     for (var i=0; i<ids.length; ++i) {
         var disease_id = ids[i];
-        $.ajax({
+        var url_diag = route + '/enfermedades/factores/' + disease_id
+        axios.get(url_diag).then(response => {
+            console.log(response);
+            if(response.status == '401'){
+                alert('La sesión se ha vencido.')
+            }
+            var arreglo = [];
+            $.each(response.data.factorIds,function(key,value)
+            {
+                arreglo.push(value.factor_id);
+            });
+
+            diseaseFactors[response.data.rule_id] = arreglo;
+            // When all the factors were loaded
+            if (Object.size(diseaseFactors) == ids.length) {
+                startDiagnoseQuestions(diseaseFactors);
+            }
+        }).catch(error => {
+            console.log(error)
+            console.log(error.response)
+            if(error.response.status == '401'){
+                cont++;
+            }
+            if(cont == 1){
+                alert('La sesión se ha vencido.')
+                /*window.location.reload()*/
+            }
+        });
+        /*$.ajax({
             url:'./enfermedades/factores/'+disease_id
         }).done(function (data) {
             var arreglo = [];
@@ -246,7 +275,7 @@ function diagnose() {
             if (Object.size(diseaseFactors) == ids.length) {
                 startDiagnoseQuestions(diseaseFactors);
             }
-        });
+        });*/
     }
 }
 
@@ -261,7 +290,7 @@ function diagnoseDisease(diagnose_position, diseaseFactors) {
         var timer = $('#forwardChaining').attr('data-timer');
 
         $.ajax({
-            url: '../public/diagnostico/timer',
+            url: '../diagnostico/timer',
             method: 'POST',
             data:{timer:timer},
             dataType:'json',
@@ -303,7 +332,7 @@ function diagnoseDisease(diagnose_position, diseaseFactors) {
             var timer = $('#forwardChaining').attr('data-timer');
 
             $.ajax({
-                url: '../public/diagnostico/timer',
+                url: '../diagnostico/timer',
                 method: 'POST',
                 data:{timer:timer},
                 dataType:'json',

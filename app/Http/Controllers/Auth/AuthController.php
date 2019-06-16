@@ -69,4 +69,10 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    public function validate_session(){
+        return response()->json([
+            'message' => 'si'
+        ]);
+    }
 }

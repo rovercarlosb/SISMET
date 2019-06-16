@@ -25,6 +25,16 @@ class PatientController extends Controller
 
         return $histories;
     }
+
+    public function reportePDF($id){
+       
+        $historia = History::find($id); 
+
+        $pdf = \PDF::loadView('pdf.diagnostico', compact('historia'));
+
+        return $pdf->stream('diagnostico.pdf');
+    }
+
     public function store( Request $request )
     {
         $validator = Validator::make($request->all(), [ 'image'=>'image' ]);

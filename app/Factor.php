@@ -8,7 +8,7 @@ class Factor extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = [ 'name', 'descripcion', 'imagen'];
+    protected $fillable = [ 'name', 'descripcion', 'imagen', 'type'];
 
     public function diseases()
     {

@@ -54,7 +54,7 @@ var $modalEliminarF;
 
 function registerSymptom() {
     event.preventDefault();
-    var url =  '../public/symptom/registrar';
+    var url =  $('#formRegistrarS').attr('action');
     $.ajax({
         url: url,
         data: new FormData(this),
@@ -124,7 +124,7 @@ function deleteSymptom() {
 
 function registerAntecedente() {
     event.preventDefault();
-    var url =  '../public/antecedente/registrar';
+    var url =  $('#formRegistrarA').attr('action');
     $.ajax({
         url: url,
         data: new FormData(this),
@@ -135,10 +135,10 @@ function registerAntecedente() {
     })
         .done(function( response ) {
 
-            if(response.error)
-                showmessage(response.message,1);
-            else{
-                showmessage(response.message,0);
+            if(response.error){
+                //showmessage(response.message,1);
+            }else{
+                //showmessage(response.message,0);
                 setTimeout(function(){
                     location.reload();
                 }, 2000);
@@ -194,7 +194,7 @@ function deleteAntecedente() {
 
 function registerFactor() {
     event.preventDefault();
-    var url =  '../public/factor/registrar';
+    var url =  $('#formRegistrarF').attr('action');
     $.ajax({
         url: url,
         data: new FormData(this),

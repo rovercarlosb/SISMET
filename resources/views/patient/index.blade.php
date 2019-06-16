@@ -264,7 +264,7 @@
         </div>
     </div>
 
-    <div id="modalDiagnosticos" class="modal fade in">
+    <div id="modalDiagnosticos" class="modal fade in" data-url="{{url('reporte/diagnostico')}}">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -282,16 +282,20 @@
                                     <table class="table table-hover table-condensed">
                                         <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>Diagnóstico</th>
                                             <th>Médico</th>
                                             <th>Fecha</th>
+                                            <th>Opciones</th>
                                         </tr>
                                         </thead>
                                         <template id="template-diagnosis">
                                             <tr>
+                                                <td data-id></td>
                                                 <td data-diagnosis></td>
                                                 <td data-user></td>
                                                 <td data-date></td>
+                                                <td data-option ></td>
                                             </tr>
                                         </template>
                                         <tbody id="table-diagnosis">

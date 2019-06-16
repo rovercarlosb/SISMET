@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1" style="background: rgba(250, 250, 250, 0.8);">
                             <h1>Bienvenido a Expert Diagnostic</h1>
-                            <h3>Sistema experto de diagnóstico médico para enfermedades gastro-intestinales</h3>
+                            <h3>Sistema de diagnóstico médico para enfermedades gastro-intestinales</h3>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
             <footer class="footer footer-transparent">
                 <div class="container">
                     <div class="copyright">
-                        &copy; <script>document.write(new Date().getFullYear())</script>, desarrollado por <a href="#">Enigmatic Team</a>
+                        &copy; <script>document.write(new Date().getFullYear())</script>, desarrollado por <a href="https://wizztagency.com.ve/developers/CessareJulius">Cessare Julius - Wizzt C.A</a>
                     </div>
                 </div>
             </footer>
