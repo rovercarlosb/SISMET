@@ -12,6 +12,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/pacientes/modificar', 'PatientController@edit');
     Route::post('/pacientes/eliminar', 'PatientController@delete');
 
+//Appoinment routes
+    Route::get('/citas', 'AppoinmentController@index');
+    Route::post('/citas/registrar', 'AppoinmentController@store');
+    Route::post('/citas/modificar', 'AppoinmentController@update');
+    Route::get('/citas/eliminar/{id}', 'AppoinmentController@destroy')->name('citas.eliminar');
+
 // Symptom routes
     Route::get('factores', 'SymptomController@index');
     Route::post('/symptom/registrar', 'SymptomController@postSymptom');
