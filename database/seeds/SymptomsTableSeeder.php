@@ -58,5 +58,9 @@ class SymptomsTableSeeder extends Seeder
         Symptom::create(['name' =>'VASCULITIS ','descripcion'=>'VASCULITIS ','imagen'=>'algo.jpg']);
         Symptom::create(['name' =>'VÓMITOS ','descripcion'=>'VÓMITOS ','imagen'=>'algo.jpg']);
         Symptom::create(['name' =>'ARDOR ESTOMACAL','descripcion'=>'ARDOR ESTOMACAL','imagen'=>'algo.jpg']);
+        Symptom::create(['name' =>'DOLOR DE CABEZA','descripcion'=>'DOLOR DE CABEZA','imagen'=>'algo.jpg']);
+        Symptom::create(['name' =>'PIGMENTACION AMARILLA DE LA PIEL','descripcion'=>'PIGMENTACION AMARILLA DE LA PIEL','imagen'=>'algo.jpg']);
+
+
     }
 }

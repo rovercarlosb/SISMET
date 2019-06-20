@@ -15,19 +15,28 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UsersTableSeeder::class);
 
-        /*$this->call(DiseasesTableSeeder::class);
+        $this->call(DiseasesTableSeeder::class);
 
-        $this->call(PatientsTableSeeder::class);
+        $this->call(SymptomsTableSeeder::class);
 
         $this->call(MedicationsTableSeeder::class);
+        
+        $this->call(RulesTableSeeder::class);
+
+        $this->call(DiseaseMedicationSeeder::class);
+
+        $this->call(DiseaseSymptomsTableSeeder::class);
+
+
+       // $this->call(PatientsTableSeeder::class);
+
 
         $this->call(FactorsTableSeeder::class);
 
-        $this->call(RulesTableSeeder::class);
 
         $this->call(RuleFactorsTableSeeder::class);
 
-        $this->call(RuleMedicationsTableSeeder::class);*/
+        $this->call(RuleMedicationsTableSeeder::class);
 
     }
 }
