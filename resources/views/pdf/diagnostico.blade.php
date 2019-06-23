@@ -32,16 +32,28 @@
 	</head>
 	<body>
 
+		@if($message)
+
+			<p>Saludos estimado cliente , a continuación se envia historial medico detallado con toda la información relacionada con el diagnostico realizado en la fecha {{$historia->date}}</p>
+
+			<br>
+
+		@endif
+
 		<div width=100% style="text-align: center; float: left;">
 			<h2>SISMET</h2>
 			<h3>Sistema medico de enfermedades tropicales</h3>
 			<h3>Historia medica  N° {{ $historia->id }}</h3>
 
 		</div>
+		
+		@if(!$message)
 
-		<div style="float: right">
-			<img src="{{asset('assets/img/zancudo.jpg')}}" width="180px" height="100px">
-		</div>
+			<div style="float: right">
+				<img src="{{asset('assets/img/zancudo.jpg')}}" width="180px" height="100px">
+			</div>
+
+		@endif
 		
 		<br style="clear: both;">
 		
@@ -174,7 +186,10 @@
 					@endforeach			
 			</tbody>
 		</table>
+		
+		<br>
 
-
+		<p style="text-align: center;"><b>SISMET | SISTEMA PARA EL CONTROL DE ENFERMEDEDADES TROPICALES ©2019 </b></p>
+	
 	</body>
 </html>

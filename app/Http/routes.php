@@ -7,7 +7,7 @@ Route::get('/home', 'HomeController@index');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/validate/auth', 'Auth\AuthController@validate_session');
 // Patient routes
-    Route::get('/pacientes', 'PatientController@index');
+    Route::get('/pacientes', 'PatientController@index')->name('pacientes');
     Route::post('/pacientes/registrar', 'PatientController@store');
     Route::post('/pacientes/modificar', 'PatientController@edit');
     Route::post('/pacientes/eliminar', 'PatientController@delete');
@@ -28,7 +28,11 @@ Route::group(['middleware' => 'auth'], function () {
 
 // General Factor routes
     Route::get('/factor/nombre/{sintoma}', 'SymptomController@getSymptom');
+
+// Traer diagnostico y cita de paciente
     Route::get('diagnosis/patient/{id}', 'PatientController@getDiagnosis');
+    Route::get('appointment/patient/{id}', 'AppoinmentController@getAppointment');
+
 
     Route::get('reporte/diagnostico/{id}', 'PatientController@reportePDF')->name('diagnostico.pdf');
 
@@ -96,5 +100,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Ayuda en línea
     Route::get('ayuda','HomeController@helpExpert');
+
+    //Envio de correos
+    Route::get('historial/mail/{id}','PatientController@historialMail');
+    Route::get('appointment/mail/{id}','AppoinmentController@appointmentMail');
+
 
 });

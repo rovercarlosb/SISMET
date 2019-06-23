@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Mail;
 use App\Http\Requests;
 use App\Appointment;
 use App\Patient;
@@ -35,9 +36,21 @@ class AppoinmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getAppointment($id)
     {
+        $appointment = Appointment::where('patient_id', $id)->where('status', '=', true)->first();
 
+        if (isset($appointment->hour)) {
+
+           $hora = date_create($appointment->hour);
+           $fecha = date_create($appointment->date);
+
+           $appointment->hour = date_format($hora,'g:i A');
+           $appointment->date = date_format($fecha,'d-m-Y');
+
+        }
+
+         return $appointment;
     }
 
     /**
@@ -67,9 +80,22 @@ class AppoinmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function appointmentMail($id)
     {
-        //
+         $appointment = Appointment::find($id);
+
+          Mail::send('emails.test', ['appointment' => $appointment], function ($message) use ($appointment) {
+
+           $message->from('carlosb20052009@gmail.com', 'SISMET');
+ 
+           //asunto
+           $message->subject('SISMET | NOTIFICACION CITA MEDICA PACIENTE '.$appointment->patient->name.' '.$appointment->patient->surname);
+ 
+           //receptor
+           $message->to($appointment->patient->email, $appointment->patient->name);
+        });
+
+        return redirect()->route('pacientes')->with(['mensaje' => 'La notificacion por correo se envio satisfactoriamente']);
     }
 
     /**

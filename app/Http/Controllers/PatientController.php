@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use App\History;
 use App\Http\Requests;
 use App\Patient;
@@ -12,6 +13,27 @@ use Illuminate\Support\Facades\Validator;
 
 class PatientController extends Controller
 {
+    public function historialMail($id){
+
+        $historia = History::find($id);
+
+        $message = true;
+
+        Mail::send('pdf.diagnostico', ['historia' => $historia, 'message' => $message], function ($message) use ($historia) {
+
+           $message->from('carlosb20052009@gmail.com', 'SISMET');
+ 
+           //asunto
+           $message->subject('SISMET | HISTORIAL MEDICO');
+ 
+           //receptor
+           $message->to($historia->patients[0]->email, $historia->patients[0]->name);
+        });
+
+        return redirect()->route('pacientes')->with(['mensaje' => 'El correo se envio satisfactoriamente']);
+    }
+
+
     public function index()
     {
         $patients = Patient::orderBy('name', 'asc')->paginate(5);
@@ -30,7 +52,9 @@ class PatientController extends Controller
        
         $historia = History::find($id); 
 
-        $pdf = \PDF::loadView('pdf.diagnostico', compact('historia'));
+        $message = false;
+
+        $pdf = \PDF::loadView('pdf.diagnostico', compact('historia','message'));
 
         return $pdf->stream('diagnostico.pdf');
     }
@@ -50,6 +74,9 @@ class PatientController extends Controller
 
         if($request->get('address') == null OR $request->get('address') == "")
             return response()->json(['error' => true, 'message' => 'Es necesario ingresar la dirección del paciente']);
+
+        if($request->get('email') == null OR $request->get('email') == "")
+            return response()->json(['error' => true, 'message' => 'Es necesario ingresar el correo del paciente']);
 
         if($request->get('city') == null OR $request->get('city') == "")
             return response()->json(['error' => true, 'message' => 'Es necesario ingresar la ciudad del paciente']);
@@ -72,15 +99,18 @@ class PatientController extends Controller
         if ( strlen($request->get('country'))<3 )
             return response()->json(['error' => true, 'message' => 'El país del paciente debe tener como mínimo 2 caracteres']);
 
+
         $patient = Patient::create([
             'name' => $request->get('name'),
             'surname' => $request->get('surname'),
             'address' => $request->get('address'),
+            'email' => $request->get('email'),
             'city' => $request->get('city'),
             'country' => $request->get('country'),
             'comment' => $request->get('comment'),
             'birthdate' => $request->get('birthdate')
         ]);
+
         if( $request->file('image') )
         {
             $path = public_path().'/patient/images';
@@ -140,6 +170,7 @@ class PatientController extends Controller
         $patient->name = $request->get('name');
         $patient->surname = $request->get('surname');
         $patient->address = $request->get('address');
+        $patient->email = $request->get('email');        
         $patient->city = $request->get('city');
         $patient->country = $request->get('country');
         $patient->comment = $request->get('comment');

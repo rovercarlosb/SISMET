@@ -323,8 +323,9 @@ function diagnoseDisease(diagnose_position, diseaseFactors) {
     }
 
     swal.queue(steps).then(function () {
+        console.log(names);
         swal({
-            title: 'Usted presenta: '+name,
+            title: 'Usted presenta: '+name+' y tambien con grandes posibilidades '+names[names.length - 1] ,
             confirmButtonText: 'Entendido !',
             showCancelButton: false
         }).finally(function() {
@@ -340,8 +341,9 @@ function diagnoseDisease(diagnose_position, diseaseFactors) {
                     'X-CSRF-TOKEN' : $('#_token').val()
                 }
             }).done(function() {
-                respuesta = disease_id;
-                $('#answer').append('<button class="btn btn-success" data-recommendation_name="'+name+'"  data-recommendation="'+disease_id+'">'+name+'</button>');
+                // respuesta = disease_id;
+                $('#answer').append('<button class="btn btn-success" data-recommendation_name="'+name+'"  data-recommendation="'+disease_id+'">'+name+'</button><input type="radio" name="sele" value="'+disease_id+'" style="margin-left: 10px">');
+                $('#answer').append('<button class="btn btn-success" data-recommendation_name="'+names[names.length - 1]+'"  data-recommendation="'+ids[ids.length - 1]+'">'+names[names.length - 1]+'</button><input type="radio" name="sele" value="'+ids[ids.length - 1]+'" style="margin-left: 10px">');
             });
             return;
             //diagnoseDisease(diagnose_position+1, diseaseFactors);
@@ -391,21 +393,30 @@ function modalRecommendation()
     $modalRecommendation.modal('show');
 }
 
-function save_diagnostic()
-{
-    if( respuesta == 0 )
-    {
-        showmessage('El diagnóstico no se ha generado',1);
-        return;
-    }
-
-    var patient = $('#patienId').val();
-    $.ajax({
-        url:'./diagnostico/guardar/'+patient+'/'+respuesta
-    }).done( function (data) {
-        if( data.success == 'true' )
-            showmessage(data.message,0);
-        else
-            showmessage(data.message,1);
+    $("input[name='sele']").change(function () {   
+            alert($(this).val());
     });
+
+function save_diagnostic()
+{    
+     
+     respuesta = $("input[name='sele']:checked").val();
+
+     if( respuesta == 0 )
+     {
+         showmessage('El diagnóstico no se ha generado',1);
+         return;
+     }
+
+
+     var patient = $('#patienId').val();
+
+     $.ajax({
+         url:'./diagnostico/guardar/'+patient+'/'+respuesta
+     }).done( function (data) {
+         if( data.success == 'true' )
+             showmessage(data.message,0);
+         else
+             showmessage(data.message,1);
+     });
 }

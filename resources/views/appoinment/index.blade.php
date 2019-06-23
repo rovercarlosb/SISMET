@@ -136,8 +136,8 @@
 
                         <div class="form-group">
                             <div class="col-md-6">
-                                <label>Hora * (Entre 08:00 AM y 06:00 PM)</label>
-                                <input type="time" class="form-control inside in-input" name="hour" required min="08:00" max="18:00">
+                                <label>Hora * </label>
+                                <input type="time" class="form-control inside in-input" name="hour" required>
                             </div>
                         </div>
 
@@ -186,8 +186,8 @@
 
                         <div class="form-group">
                             <div class="col-md-6">
-                                <label>Hora * (Entre 08:00 AM y 06:00 PM)</label>
-                                <input type="time" class="form-control inside in-input" name="hour" required min="08:00" max="18:00">
+                                <label>Hora *</label>
+                                <input type="time" class="form-control inside in-input" name="hour" required>
                             </div>
                         </div>
 

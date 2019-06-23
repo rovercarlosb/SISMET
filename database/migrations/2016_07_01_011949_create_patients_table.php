@@ -17,6 +17,7 @@ class CreatePatientsTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('address');
+            $table->string('email')->unique();
             $table->string('city');
             $table->string('country');
             $table->string('image');

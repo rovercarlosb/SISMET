@@ -352,15 +352,18 @@ function diagnoseDisease(diagnose_position, symptoms_group) {
     }
 
     swal.queue(steps).then(function () {
+        // console.log(name);
         swal({
-            title: 'Usted presenta: '+name,
+            title: 'Usted presenta: '+name+  'o posiblemente ',
             confirmButtonText: 'Entiendo !',
             showCancelButton: false
         }).finally(function() {
             swal.resetDefaults();
             diagnoseDisease(diagnose_position+1, symptoms_group);
         });;
+
     }, function () {
+        // console.log(name);
         swal({
             title: 'Se ha descartado la enfermedad: '+name,
             confirmButtonText: 'Entiendo !',

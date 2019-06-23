@@ -7,19 +7,60 @@ function principal(){
     $modalEditar = $('#modalEditar');
     $modalEliminar = $('#modalEliminar');
     $modalDiagnosticos = $('#modalDiagnosticos');
+    $modalCita = $('#modalCita');
+    $modalNotificar = $('#modalNotificar');
 
     $('[data-id]').on('click', mostrarEditar);
+    $('[data-cita]').on('click', mostrarCita);
     $('[data-delete]').on('click', mostrarEliminar);
     $('[data-diagnosticos]').on('click', showDiagnosticos);
+    $('[data-notificacion]').on('click', showCita);
+
 
     $('#formEditar').on('submit', updatePatient);
     $('#formRegistrar').on('submit', registerPatient);
     $('#formEliminar').on('submit', deletePatient);
+    $('#formCita').on('submit',registerCita);
 
     $('#btnNew').on('click', mostrarNuevo);
 }
 
-var $modalDiagnosticos;
+var $modalDiagnosticos, $modalNotificar;
+
+function mostrarCita(){
+
+    var id = $(this).data('cita');
+
+    $modalCita.find('[name="patient_id"]').val(id);
+
+    $modalCita.modal('show');
+
+}
+
+
+function registerCita(){
+
+    event.preventDefault();
+
+    $.ajax({
+            url: $(this).attr("action"),
+            data: new FormData(this),
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            method: 'POST'
+        })
+        .done(function( response ) {
+            if(response.error)
+                showmessage(response.message,1);
+            else{
+                showmessage(response.message,0);
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
+            }
+        });
+}
 
 function showDiagnosticos() {
     var name = $(this).data('name');
@@ -37,6 +78,24 @@ function showDiagnosticos() {
     $modalDiagnosticos.modal('show');
 }
 
+function showCita() {
+    var name = $(this).data('name');
+    var surname = $(this).data('surname');
+    var id = $(this).data('notificacion');
+    $modalNotificar.find('[id="nombre"]').html(name+" "+surname);
+    
+    
+    $.getJSON('appointment/patient/'+id, function (data) {
+    
+        $('#table-cita').html("");
+
+        renderTemplateAppointment(data.id,data.date, data.hour);
+        console.log(data);
+    });
+
+    $modalNotificar.modal('show');
+}
+
 function activateTemplate(id) {
     var t = document.querySelector(id);
     return document.importNode(t.content, true);
@@ -46,20 +105,39 @@ function renderTemplateDiagnosis(id_history,diagnosis, percentage, user,date) {
     var clone = activateTemplate('#template-diagnosis');
 
     let url = $("#modalDiagnosticos").data('url')+'/'+id_history;
+    let url_email = $('#tabla-diagnostico').data('url')+'/'+id_history;
+
     clone.querySelector("[data-id]").innerHTML = id_history;
     clone.querySelector("[data-diagnosis]").innerHTML = diagnosis + ' ' + percentage +' %';
     clone.querySelector("[data-user]").innerHTML = user;
     clone.querySelector("[data-date]").innerHTML = date;
     clone.querySelector("[data-option]").innerHTML = '<a class="btn btn-primary" target="_blank">Descargar PDF</a>';
+    clone.querySelector("[data-envio]").innerHTML = '<a class="btn btn-success" id="correo">Enviar por correo</a>';
 
-    clone.querySelector("a").setAttribute('href',url)
+    clone.querySelector("a").setAttribute('href',url);
+    clone.querySelector("a[id='correo']").setAttribute('href', url_email);
 
     $('#table-diagnosis').append(clone);
 }
 
+function renderTemplateAppointment(id_appointment,date, hour) {
+
+    var clone_appointment = activateTemplate('#template-appointments');
+
+    let email = $('#table-appointments').data('url')+'/'+id_appointment;
+
+    clone_appointment.querySelector("[data-id]").innerHTML = id_appointment;
+    clone_appointment.querySelector("[data-date]").innerHTML = date;
+    clone_appointment.querySelector("[data-hour]").innerHTML = hour;
+    clone_appointment.querySelector("[data-option]").innerHTML = '<a class="btn btn-success" id="appointment-mail">Notificar por correo</a>';
+
+    clone_appointment.querySelector("a[id='appointment-mail']").setAttribute('href', email);
+
+    $('#table-cita').append(clone_appointment);
+}
 function deletePatient() {
     event.preventDefault();
-    var url =  $('#formRegistrar').attr('action');
+    var url =  $('#formEliminar').attr('action');
     console.log(url);
     $.ajax({
         url: url,
@@ -144,6 +222,9 @@ function mostrarEditar() {
 
     var price = $(this).data('address');
     $modalEditar.find('[name="address"]').val(price);
+
+    var email = $(this).data('email');
+    $modalEditar.find('[name="email"]').val(email);
 
     var brand = $(this).data('city');
     $modalEditar.find('[name="city"]').val(brand);

@@ -26,6 +26,15 @@
 @endsection
 
 @section('content')
+
+    @if (session('mensaje'))
+      <div class="alert alert-success alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        </button>
+        <h3>{{ session('mensaje') }}</h3>
+      </div>
+    @endif
+
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -58,6 +67,7 @@
                                         <th>Nombre</th>
                                         <th>Apellido</th>
                                         <th>Direccion</th>
+                                        <th>Correo</th>
                                         <th data-hide="all" data-breakpoints="all">Ciudad</th>
                                         <th data-hide="all" data-breakpoints="all">País</th>
                                         <th data-type="html">Imagen</th>
@@ -72,16 +82,25 @@
                                         <td>{{ $patient->name }}</td>
                                         <td>{{ $patient->surname }}</td>
                                         <td>{{ $patient->address }}</td>
+                                        <td>{{ $patient->email }}</td>
                                         <td>{{ $patient->city }}</td>
                                         <td>{{ $patient->country }}</td>
                                         <td><img src="{{ asset('patient/images') }}/{{ $patient->image }} " class="image"></td>
                                         <td>{{ $patient->birthdate }}</td>
                                         <td>{{ $patient->comment }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary" data-id="{{ $patient->id }}"
+                                            <button type="button" class="btn btn-success" data-cita="{{ $patient->id }}"
+                                                    data-name="{{ $patient->name }}"
+                                                    data-surname="{{ $patient->surname }}"><i class="ti-alarm-clock" data-backdrop="false"></i> Agendar Cita</button>
+
+                                                    <button type="button"  class="btn btn-info" data-notificacion="{{ $patient->id }}" data-name="{{ $patient->name }}"
+                                                    data-surname="{{ $patient->surname }}"><i class="ti-alarm-clock"></i>Notificar proxima cita</button>
+                                                    
+                                                    <button type="button" class="btn btn-primary" data-id="{{ $patient->id }}"
                                                     data-name="{{ $patient->name }}"
                                                     data-surname="{{ $patient->surname }}"
                                                     data-address="{{ $patient->address }}"
+                                                    data-email="{{ $patient->email }}"
                                                     data-city="{{ $patient->city }}"
                                                     data-country="{{ $patient->country }}"
                                                     data-image="{{ $patient->image }}"
@@ -133,6 +152,13 @@
                             <label class="control-label col-md-3" for="address">Dirección <span class="required">*</span></label>
                             <div class="col-md-8">
                                 <input type="text" id="address" name="address" class="form-control inside" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="email">Correo electronico <span class="required">*</span></label>
+                            <div class="col-md-8">
+                                <input type="email" id="email" name="email" class="form-control inside" required>
                             </div>
                         </div>
 
@@ -216,6 +242,13 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="control-label col-md-3" for="email">Correo electronico <span class="required">*</span></label>
+                            <div class="col-md-8">
+                                <input type="email" id="email" name="email" class="form-control inside" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="control-label col-md-3" for="city">Ciudad <span class="required">*</span></label>
                             <div class="col-md-8">
                                 <input type="text" id="city" name="city" class="form-control inside">
@@ -279,7 +312,7 @@
                                     <h4 class="title">Listado de diagnósticos</h4>
                                 </div>
                                 <div class="content">
-                                    <table class="table table-hover table-condensed">
+                                    <table class="table table-hover" id="tabla-diagnostico" data-url="{{url('historial/mail')}}"> 
                                         <thead>
                                         <tr>
                                             <th>ID</th>
@@ -287,6 +320,7 @@
                                             <th>Médico</th>
                                             <th>Fecha</th>
                                             <th>Opciones</th>
+                                            <th>Enviar</th>
                                         </tr>
                                         </thead>
                                         <template id="template-diagnosis">
@@ -295,10 +329,63 @@
                                                 <td data-diagnosis></td>
                                                 <td data-user></td>
                                                 <td data-date></td>
-                                                <td data-option ></td>
+                                                <td data-option></td>
+                                                <td data-envio></td>
                                             </tr>
                                         </template>
                                         <tbody id="table-diagnosis">
+                                        {{-- Load with javascript --}}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <button class="btn btn-danger" data-dismiss="modal"><span class="ti-close"></span> Cancelar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+        <div id="modalNotificar" class="modal fade in" data-url="{{url('reporte/diagnostico')}}">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Proxima cita del paciente:  <i id="nombre" ></i> </h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="card">
+                                <div class="header">
+                                    <h4 class="title">Cita</h4>
+                                </div>
+                                <div class="content">
+                                    <table class="table table-hover" id="table-appointments" data-url="{{url('appointment/mail')}}"> 
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                        </thead>
+                                        <template id="template-appointments">
+                                            <tr>
+                                                <td data-id></td>
+                                                <td data-date></td>
+                                                <td data-hour></td>
+                                                <td data-option></td>
+                                            </tr>
+                                        </template>
+                                        <tbody id="table-cita">
                                         {{-- Load with javascript --}}
 
                                         </tbody>
@@ -343,6 +430,57 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalCita" class="modal fade in">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Registrar cita</h4>
+                </div>
+
+                <div class="modal-body">
+                    <form id="formCita" action="{{ url('citas/registrar') }}" class="form-horizontal form-label-left"  method="POST">
+                        <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}" />
+                        <input type="hidden" name="id" />
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>Paciente *</label>
+                                <select class="form-control" name="patient_id" placeholder="Seleccionar" required>
+                                    <option value="null" selected>Seleccionar</option>
+                                  @foreach($patients as $patient)
+                                    <option value="{{$patient->id}}">{{$patient->name}} {{$patient->surname}}</option>
+                                  @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label>Fecha *</label>
+                                <input type="date" class="form-control inside" name="date" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label>Hora *</label>
+                                <input type="time" class="form-control inside in-input" name="hour" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group text-center">
+                            <div class="col-md-12">
+                                <button class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                                <button class="btn btn-primary"><span class="glyphicon glyphicon-ok-circle"></span> Registrar </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
