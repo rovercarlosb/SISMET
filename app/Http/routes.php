@@ -104,6 +104,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Envio de correos
     Route::get('historial/mail/{id}','PatientController@historialMail');
     Route::get('appointment/mail/{id}','AppoinmentController@appointmentMail');
+    Route::post('recipe/mail','PatientController@recipeMail');
 
 
 });

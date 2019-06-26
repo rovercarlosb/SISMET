@@ -9,18 +9,20 @@ function principal(){
     $modalDiagnosticos = $('#modalDiagnosticos');
     $modalCita = $('#modalCita');
     $modalNotificar = $('#modalNotificar');
+    $modalRecipe = $('#modalRecipe');
 
     $('[data-id]').on('click', mostrarEditar);
     $('[data-cita]').on('click', mostrarCita);
     $('[data-delete]').on('click', mostrarEliminar);
     $('[data-diagnosticos]').on('click', showDiagnosticos);
     $('[data-notificacion]').on('click', showCita);
-
+    $('[data-recipe]').on('click', showRecipe);
 
     $('#formEditar').on('submit', updatePatient);
     $('#formRegistrar').on('submit', registerPatient);
     $('#formEliminar').on('submit', deletePatient);
     $('#formCita').on('submit',registerCita);
+    $('#formRecipe').on('submit',sendRecipe);
 
     $('#btnNew').on('click', mostrarNuevo);
 }
@@ -34,6 +36,16 @@ function mostrarCita(){
     $modalCita.find('[name="patient_id"]').val(id);
 
     $modalCita.modal('show');
+
+}
+
+function showRecipe(){
+
+    var id = $(this).data('recipe');
+
+    $modalRecipe.find('[name="id"]').val(id);
+
+    $modalRecipe.modal('show');
 
 }
 
@@ -163,6 +175,30 @@ function deletePatient() {
 function updatePatient() {
     event.preventDefault();
     var url =  '../public/pacientes/modificar';
+    $.ajax({
+        url: url,
+        data: new FormData(this),
+        dataType: "JSON",
+        processData: false,
+        contentType: false,
+        method: 'POST'
+    })
+        .done(function( response ) {
+
+            if(response.error)
+                showmessage(response.message,1);
+            else{
+                showmessage(response.message,0);
+                setTimeout(function(){
+                    location.reload();
+                }, 3000);
+            }
+        });
+}
+
+function sendRecipe() {
+    event.preventDefault();
+    var url =  $('#formRecipe').attr('action');
     $.ajax({
         url: url,
         data: new FormData(this),

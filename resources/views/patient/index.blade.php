@@ -96,6 +96,8 @@
                                                     <button type="button"  class="btn btn-info" data-notificacion="{{ $patient->id }}" data-name="{{ $patient->name }}"
                                                     data-surname="{{ $patient->surname }}"><i class="ti-alarm-clock"></i>Notificar proxima cita</button>
                                                     
+                                                    <button type="button"  class="btn btn-primary" data-recipe="{{ $patient->id }}"><i class="ti-alarm-clock"></i>Enviar recipe medico</button>
+
                                                     <button type="button" class="btn btn-primary" data-id="{{ $patient->id }}"
                                                     data-name="{{ $patient->name }}"
                                                     data-surname="{{ $patient->surname }}"
@@ -201,6 +203,36 @@
                     <div class="form-group text-center">
                         <button class="btn btn-danger" data-dismiss="modal"><span class="ti-close"></span> Cancelar</button>
                         <button class="btn btn-primary"><span class="ti-save" aria-hidden="true"></span> Guardar paciente</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalRecipe" class="modal fade in">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Enviar recipe paciente</h4>
+                </div>
+
+
+                <form id="formRecipe" action="{{ url('/recipe/mail') }}" class="form-horizontal form-label-left"  method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                        <input type="hidden" name="id" />
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3"  for="image">Adjuntar recipe</label>
+                            <div class="col-md-5">
+                                <input type="file" name="image" class="form-control inside" accept="image/*" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button class="btn btn-danger" data-dismiss="modal"><span class="ti-close"></span> Cancelar</button>
+                        <button class="btn btn-primary"><span class="ti-save" aria-hidden="true"></span> Enviar recipe</button>
                     </div>
                 </form>
             </div>

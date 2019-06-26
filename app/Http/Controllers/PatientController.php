@@ -33,6 +33,32 @@ class PatientController extends Controller
         return redirect()->route('pacientes')->with(['mensaje' => 'El correo se envio satisfactoriamente']);
     }
 
+    public function recipeMail(Request $request){
+
+        $paciente = Patient::find($request->get('id'));
+
+        $path = public_path().'/patient/images';
+        $extension = $request->file('image')->getClientOriginalExtension();
+        $fileName = $paciente->id . '.' . $extension;
+        $request->file('image')->move($path, $fileName);
+
+        Mail::send('emails.recipe', ['paciente' => $paciente], function ($message) use ($path,$paciente,$fileName) {
+
+           $message->from('carlosb20052009@gmail.com', 'SISMET');
+ 
+           //asunto
+           $message->subject('SISMET | RECIPE MEDICO');
+
+    
+           $message->attach($path.'/'.$fileName);
+
+           //receptor
+           $message->to($paciente->email, $paciente->name.' '.$paciente->surname);
+        });
+
+        return response()->json(['error' => false, 'message' => 'Recipe enviado correctamente']);
+
+    }
 
     public function index()
     {
