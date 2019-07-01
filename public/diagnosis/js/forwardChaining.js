@@ -1,5 +1,7 @@
 $(document).on('ready',principal);
 
+$('#disease').hide();
+
 var factors= [];
 var ids = [];
 var names = [];
@@ -7,6 +9,8 @@ var globalFactorsIds = [];
 var globalFactorsNames = [];
 var globalFactorsDescriptions = [];
 var $modalRecommendation;
+var $modalDisease;
+
 var respuesta =0;
 function principal()
 {
@@ -36,8 +40,14 @@ function principal()
     $('#forwardChaining').on('click',forwardChaining);
 
     $modalRecommendation = $('#modalRecommendation');
-    $('body').on('click','[data-recommendation]',modalRecommendation);
+    $modalDisease = $('#modalDisease');
 
+    $('#disease').on('click',modalDisease)
+
+
+    $('#new_diases').on('change', addDisease)
+
+    $('body').on('click','[data-recommendation]',modalRecommendation);
     $('#formDiagnostico').on('submit', save_diagnostic);
 }
 
@@ -325,7 +335,7 @@ function diagnoseDisease(diagnose_position, diseaseFactors) {
     swal.queue(steps).then(function () {
         console.log(names);
         swal({
-            title: 'Usted presenta: '+name+' y tambien con grandes posibilidades '+names[names.length - 1] ,
+            title: 'Posibles diagnosticos: <br> * '+name+' <br> *'+names[names.length - 1] ,
             confirmButtonText: 'Entendido !',
             showCancelButton: false
         }).finally(function() {
@@ -342,8 +352,10 @@ function diagnoseDisease(diagnose_position, diseaseFactors) {
                 }
             }).done(function() {
                 // respuesta = disease_id;
-                $('#answer').append('<button class="btn btn-success" data-recommendation_name="'+name+'"  data-recommendation="'+disease_id+'">'+name+'</button><input type="radio" name="sele" value="'+disease_id+'" style="margin-left: 10px">');
-                $('#answer').append('<button class="btn btn-success" data-recommendation_name="'+names[names.length - 1]+'"  data-recommendation="'+ids[ids.length - 1]+'">'+names[names.length - 1]+'</button><input type="radio" name="sele" value="'+ids[ids.length - 1]+'" style="margin-left: 10px">');
+                $('#answer').append('<button class="btn btn-success" data-recommendation_name="'+name+'"  data-recommendation="'+disease_id+'">'+name+'</button><input type="radio" name="sele" value="'+disease_id+'" style="margin-left: 10px"> <br>');
+                $('#answer').append('<button class="btn btn-success" data-recommendation_name="'+names[names.length - 1]+'"  data-recommendation="'+ids[ids.length - 1]+'">'+names[names.length - 1]+'</button><input type="radio" name="sele" value="'+ids[ids.length - 1]+'" style="margin-left: 10px"> <br>');
+                $('#disease').show();
+
             });
             return;
             //diagnoseDisease(diagnose_position+1, diseaseFactors);
@@ -393,9 +405,23 @@ function modalRecommendation()
     $modalRecommendation.modal('show');
 }
 
+function modalDisease()
+{
+    $modalDisease.modal('show');
+}
+
     $("input[name='sele']").change(function () {   
             alert($(this).val());
     });
+
+function addDisease(){
+
+    let id = $('#new_diases option:selected').val();
+    let name = $('#new_diases option:selected').text();
+    $('#answer').append('<button class="btn btn-success" data-recommendation_name="'+name+'"  data-recommendation="'+id+'">'+name+'</button><input type="radio" name="sele" value="'+id+'" style="margin-left: 10px">');
+    $('#cerrar').click();
+
+}
 
 function save_diagnostic()
 {    
@@ -420,10 +446,17 @@ function save_diagnostic()
          method: 'POST'
      
      }).done( function (data) {
-         if( data.success == 'true' )
+         if( data.success == 'true' ){
+
              showmessage(data.message,0);
-         else
+             setTimeout(function(){
+                    location.reload();
+                }, 2000);
+         }
+
+         else{
              showmessage(data.message,1);
+         }
      });
 
      // './diagnostico/guardar/'+patient+'/'+respuesta,

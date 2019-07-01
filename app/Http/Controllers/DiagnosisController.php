@@ -51,7 +51,9 @@ class DiagnosisController extends Controller
         $symptoms = Factor::where('type', 'S')->lists('name')->toJson();
         $others = Factor::where('type', 'O')->lists('name')->toJson();
 
-        return view('diagnosis.index')->with(compact('patientName','patientId', 'antecedents', 'symptoms', 'others','time_start'));
+        $rules = Rule::all();
+
+        return view('diagnosis.index')->with(compact('patientName','patientId', 'antecedents', 'symptoms', 'others','time_start', 'rules'));
     }
 
     public function getAll(){

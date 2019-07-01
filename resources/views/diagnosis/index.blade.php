@@ -174,11 +174,11 @@
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"  for="recipe">Adjuntar recipe</label>
+                                        <label class="control-label col-md-3"  for="recipe">Adjuntar recipe (opcional)</label>
                                         <div class="col-md-8">
-                                            <input type="file" name="recipe" id="recipe" class="form-control inside" accept="image/*"    required>
+                                            <input type="file" name="recipe" id="recipe" class="form-control inside" accept="image/*">
                                          </div>
-                                </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-6 text-center">
                                     <button class="btn btn-success" id="save_diagnostic">Guardar diagnostico</button>
@@ -195,8 +195,13 @@
                             <div class="col-md-3 text-center">
                                 <button class="btn btn-success" id="forwardChaining" data-timer="{{$time_start}}">Diagnosticar</button>
                             </div>
+
                             <div class="col-md-3 text-center">
                                 <a class="btn btn-danger" href="{{ url('pacientes') }}">Volver</a>
+                            </div>
+
+                            <div class="col-md-3 text-center">
+                                <button class="btn btn-info" id="disease">Agregar otra enfermedad</button>
                             </div>
                         </div>
                     </div>
@@ -221,6 +226,36 @@
                 <div class="modal-footer">
                     <div class="text-center">
                         <button class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-menu-up"></span> Salir</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+     <div id="modalDisease" class="modal fade in">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Agregar otra enfermedad</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                                <label class="control-label col-md-3"  for="new_diases">Agregar enfermedad</label>
+                                <div class="col-md-8">
+                                    <select class="select" name="new_diases" id="new_diases">
+                                        @foreach($rules as $rule)
+                                            <option value="{{$rule->id}}">{{$rule->diseases->name}} {{$rule->percentage}} %</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button class="btn btn-danger" data-dismiss="modal" id="cerrar"><span class="glyphicon glyphicon-menu-up"></span> Salir</button>
                     </div>
                 </div>
 
