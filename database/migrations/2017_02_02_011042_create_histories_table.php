@@ -17,6 +17,7 @@ class CreateHistoriesTable extends Migration
             $table->integer('patient_id')->unsigned();
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
             $table->string('date');
+            $table->string('recipe')->nullable();
             $table->integer('rule_id')->unsigned();
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
             $table->integer('user_id')->unsigned();

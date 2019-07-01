@@ -59,8 +59,8 @@
                         <div class="header">
                             <h4 class="title">Citas</h4>
                         </div>
-                        <div class="content table-responsive table-full-width">
-                            <table class="table table-striped mytable">
+                        <div class="content">
+                            <table class="table table-striped table-bordered" id="example2">
                                 <thead>
                                 <tr>
                                     <th>Paciente</th>
@@ -235,4 +235,33 @@
     <script src="{{ asset('assets/js/footable.min.js') }} "></script>
     <script src="{{ asset('assets/js/search.js') }} "></script>
     <script src="{{ asset('appoinment/index.js') }}"></script>
+        <script>
+        $(document).ready(function(){
+
+            $('#example2').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : false,
+              'info'        : true,
+              'autoWidth'   : true,
+              "language": {
+                    "lengthMenu": "Mostrar _MENU_",
+                    "search": "Buscar",
+                    "info": "Mostrar pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No exixten registros",
+                    'Previus': 'Anterior',
+                    "emptyTable": 'No hay datos',
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Ultimo",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }, 
+
+                }
+            })
+
+        }) 
+    </script>
 @endsection

@@ -38,7 +38,7 @@ function principal()
     $modalRecommendation = $('#modalRecommendation');
     $('body').on('click','[data-recommendation]',modalRecommendation);
 
-    $('#save_diagnostic').on('click',save_diagnostic);
+    $('#formDiagnostico').on('submit', save_diagnostic);
 }
 
 function sintomaAdd()
@@ -399,7 +399,8 @@ function modalRecommendation()
 
 function save_diagnostic()
 {    
-     
+     event.preventDefault();
+
      respuesta = $("input[name='sele']:checked").val();
 
      if( respuesta == 0 )
@@ -408,15 +409,22 @@ function save_diagnostic()
          return;
      }
 
-
      var patient = $('#patienId').val();
 
      $.ajax({
-         url:'./diagnostico/guardar/'+patient+'/'+respuesta
+         url: $('#formDiagnostico').attr('action')+'/'+patient+'/'+respuesta,
+         data: new FormData(this),
+         dataType: "JSON",
+         processData: false,
+         contentType: false,
+         method: 'POST'
+     
      }).done( function (data) {
          if( data.success == 'true' )
              showmessage(data.message,0);
          else
              showmessage(data.message,1);
      });
+
+     // './diagnostico/guardar/'+patient+'/'+respuesta,
 }

@@ -24,6 +24,8 @@
     <!--  CSS for Demo Purpose, don't include it in your project     -->
     <link href="{{ asset('assets/css/demo.css') }}" rel="stylesheet" />
 
+    <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+
 
     <!--  Fonts and icons     -->
     <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
@@ -209,9 +211,13 @@
 
 <!--   Core JS Files   -->
 <script src="{{ asset('assets/js/jquery-1.10.2.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('js/axios.js') }}" type="text/javascript"></script>
 
+{{-- <script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+ --}} <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/axios.js') }}" type="text/javascript"></script>
 <!--  Checkbox, Radio & Switch Plugins -->
 <script src="{{ asset('assets/js/bootstrap-checkbox-radio.js') }}"></script>
 
@@ -227,6 +233,11 @@
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 <script src="{{ asset('assets/js/demo.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+
+<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+
+
+
 <script>
     var route = {!! json_encode(url('/')) !!}
     /*setInterval(() => {
@@ -255,6 +266,7 @@
         });
     });
     </script>
+
 @show
 
 <script>

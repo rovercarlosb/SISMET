@@ -170,14 +170,30 @@
                             </div>
                         </div>
                         <div class="row">
+                            <form id="formDiagnostico" action="{{ url('/diagnostico/guardar') }}" class="form-horizontal form-label-left"  method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3"  for="recipe">Adjuntar recipe</label>
+                                        <div class="col-md-8">
+                                            <input type="file" name="recipe" id="recipe" class="form-control inside" accept="image/*"    required>
+                                         </div>
+                                </div>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <button class="btn btn-success" id="save_diagnostic">Guardar diagnostico</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <br>
+
+                        <div class="row">
                             <div class="col-md-3 text-center">
                                 <button class="btn btn-primary" id="newDiagnostic">Nuevo diagnostico</button>
                             </div>
                             <div class="col-md-3 text-center">
                                 <button class="btn btn-success" id="forwardChaining" data-timer="{{$time_start}}">Diagnosticar</button>
-                            </div>
-                            <div class="col-md-3 text-center">
-                                <button class="btn btn-success" id="save_diagnostic">Guardar diagnostico</button>
                             </div>
                             <div class="col-md-3 text-center">
                                 <a class="btn btn-danger" href="{{ url('pacientes') }}">Volver</a>

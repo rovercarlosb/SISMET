@@ -48,8 +48,8 @@
                         <div class="header">
                             <h4 class="title">Listado de enfermedades</h4>
                         </div>
-                        <div class="content table-responsive table-full-width">
-                            <table class="table table-striped mytable">
+                        <div class="content">
+                            <table class="table table-striped table-bordered" id="example2">
                                 <thead>
                                     <tr>
                                         <th> Enfermedad</th>
@@ -72,7 +72,6 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            {!! $diseases->render() !!}
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -241,4 +240,33 @@
     <script src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('assets/js/search.js') }} "></script>
     <script src="{{ asset('knowledge/js/index.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+
+            $('#example2').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : false,
+              'info'        : true,
+              'autoWidth'   : true,
+              "language": {
+                    "lengthMenu": "Mostrar _MENU_",
+                    "search": "Buscar",
+                    "info": "Mostrar pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No exixten registros",
+                    'Previus': 'Anterior',
+                    "emptyTable": 'No hay datos',
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Ultimo",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }, 
+
+                }
+            })
+
+        }) 
+    </script>
 @endsection

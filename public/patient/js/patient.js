@@ -6,6 +6,8 @@ function principal(){
     $modalNuevo = $('#modalNuevo');
     $modalEditar = $('#modalEditar');
     $modalEliminar = $('#modalEliminar');
+    $modalDesactivar = $('#modalDesactivar');
+    $modalActivar = $('#modalActivar');
     $modalDiagnosticos = $('#modalDiagnosticos');
     $modalCita = $('#modalCita');
     $modalNotificar = $('#modalNotificar');
@@ -14,6 +16,8 @@ function principal(){
     $('[data-id]').on('click', mostrarEditar);
     $('[data-cita]').on('click', mostrarCita);
     $('[data-delete]').on('click', mostrarEliminar);
+    $('[data-deactivate]').on('click', mostrarDesactivar);
+    $('[data-activate]').on('click', mostrarActivar);
     $('[data-diagnosticos]').on('click', showDiagnosticos);
     $('[data-notificacion]').on('click', showCita);
     $('[data-recipe]').on('click', showRecipe);
@@ -21,6 +25,8 @@ function principal(){
     $('#formEditar').on('submit', updatePatient);
     $('#formRegistrar').on('submit', registerPatient);
     $('#formEliminar').on('submit', deletePatient);
+    $('#formDesactivar').on('submit', deactivatePatient);
+    $('#formActivar').on('submit', activatePatient);
     $('#formCita').on('submit',registerCita);
     $('#formRecipe').on('submit',sendRecipe);
 
@@ -172,6 +178,56 @@ function deletePatient() {
         });
 }
 
+function deactivatePatient() {
+    event.preventDefault();
+    var url =  $('#formDesactivar').attr('action');
+    // console.log(url);
+    $.ajax({
+        url: url,
+        data: new FormData(this),
+        dataType: "JSON",
+        processData: false,
+        contentType: false,
+        method: 'POST'
+    })
+        .done(function( response ) {
+
+            if(response.error)
+                showmessage(response.message,1);
+            else{
+                showmessage(response.message,0);
+                setTimeout(function(){
+                    location.reload();
+                }, 3000);
+            }
+        });
+}
+
+function activatePatient() {
+    event.preventDefault();
+    var url =  $('#formActivar').attr('action');
+    // console.log(url);
+    $.ajax({
+        url: url,
+        data: new FormData(this),
+        dataType: "JSON",
+        processData: false,
+        contentType: false,
+        method: 'POST'
+    })
+        .done(function( response ) {
+
+            if(response.error)
+                showmessage(response.message,1);
+            else{
+                showmessage(response.message,0);
+                setTimeout(function(){
+                    location.reload();
+                }, 3000);
+            }
+        });
+}
+
 function updatePatient() {
     event.preventDefault();
     var url =  '../public/pacientes/modificar';
@@ -291,6 +347,28 @@ function mostrarEliminar() {
     $modalEliminar.find('[name="nombreEliminar"]').val(name+" "+surname);
 
     $modalEliminar.modal('show');
+}
+
+function mostrarDesactivar() {
+    var id = $(this).data('deactivate');
+    $modalDesactivar.find('[name="id"]').val(id);
+
+    var name = $(this).data('name');
+    var surname = $(this).data('surname');
+    $modalDesactivar.find('[name="nombreDesactivar"]').val(name+" "+surname);
+
+    $modalDesactivar.modal('show');
+}
+
+function mostrarActivar() {
+    var id = $(this).data('activate');
+    $modalActivar.find('[name="id"]').val(id);
+
+    var name = $(this).data('name');
+    var surname = $(this).data('surname');
+    $modalActivar.find('[name="nombreActivar"]').val(name+" "+surname);
+
+    $modalActivar.modal('show');
 }
 
 function mostrarNuevo() {

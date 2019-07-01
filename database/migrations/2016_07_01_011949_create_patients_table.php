@@ -22,6 +22,7 @@ class CreatePatientsTable extends Migration
             $table->string('country');
             $table->string('image');
             $table->string('comment');
+            $table->boolean('status')->default(true);
             $table->date('birthdate');
             $table->timestamps();
         });

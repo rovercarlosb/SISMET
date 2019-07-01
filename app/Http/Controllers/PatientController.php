@@ -231,4 +231,28 @@ class PatientController extends Controller
         return response()->json(['error' => false, 'message' => 'Paciente eliminado correctamente.']);
         
     }
+
+    public function deactivate( Request $request )
+    {
+        $paciente = Patient::find($request->get('id'));
+
+        $paciente->update([
+            'status' => 0,
+        ]);
+
+        return response()->json(['error' => false, 'message' => 'Paciente desactivado correctamente.']);
+        
+    }
+
+     public function activate( Request $request )
+    {
+        $paciente = Patient::find($request->get('id'));
+
+        $paciente->update([
+            'status' => 1,
+        ]);
+
+        return response()->json(['error' => false, 'message' => 'Paciente reactivado correctamente.']);
+        
+    }
 }

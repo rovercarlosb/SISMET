@@ -299,8 +299,8 @@
 
 
 
-                                            <div class="content table-responsive table-full-width">
-                                                <table class="table table-striped mytable">
+                                            <div class="content">
+                                                <table class="table table-striped table-bordered" id="example2">
                                                     <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -354,8 +354,8 @@
                                                 </div>
                                             @endif
 
-                                            <div class="content table-responsive table-full-width">
-                                                <table class="table table-striped mytable">
+                                            <div class="content">
+                                                <table class="table table-striped table-bordered" id="example3">
                                                     <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -381,7 +381,6 @@
                                                     @endforeach
                                                     </tbody>
                                                 </table>
-                                                {!! $sintomas->render() !!}
                                             </div>
                                         </div>
                                     </div>
@@ -411,8 +410,8 @@
 
 
 
-                                            <div class="content table-responsive table-full-width">
-                                                <table class="table table-striped mytable">
+                                            <div class="content">
+                                                <table class="table table-striped table-bordered" id="example">
                                                     <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -438,7 +437,6 @@
                                                     @endforeach
                                                     </tbody>
                                                 </table>
-                                                {!! $otros->render() !!}
                                             </div>
                                         </div>
                                     </div>
@@ -809,4 +807,79 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('symptoms/js/index.js') }}"></script>
+     <script>
+        $(function () {
+            $('#example2').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : false,
+              'info'        : true,
+              'autoWidth'   : true,
+              "language": {
+                    "lengthMenu": "Mostrar _MENU_",
+                    "search": "Buscar",
+                    "info": "Mostrar pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No exixten registros",
+                    'Previus': 'Anterior',
+                    "emptyTable": 'No hay datos',
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Ultimo",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }, 
+
+                }
+            })
+
+            $('#example3').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : false,
+              'info'        : true,
+              'autoWidth'   : true,
+              "language": {
+                    "lengthMenu": "Mostrar _MENU_",
+                    "search": "Buscar",
+                    "info": "Mostrar pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No exixten registros",
+                    'Previus': 'Anterior',
+                    "emptyTable": 'No hay datos',
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Ultimo",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }, 
+
+                }
+            })
+
+            $('#example').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : false,
+              'info'        : true,
+              'autoWidth'   : true,
+              "language": {
+                    "lengthMenu": "Mostrar _MENU_",
+                    "search": "Buscar",
+                    "info": "Mostrar pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No exixten registros",
+                    'Previus': 'Anterior',
+                    "emptyTable": 'No hay datos',
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Ultimo",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }, 
+
+                }
+            })
+          })
+    </script>
 @endsection

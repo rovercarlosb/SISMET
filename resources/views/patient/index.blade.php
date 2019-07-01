@@ -57,22 +57,19 @@
                                 </div>
                             </div>
                         @endif
-
-
-
-                        <div class="content table-responsive table-full-width">
-                            <table class="table table-striped mytable">
+                        <div class="content">
+                            <table class="table table-striped table-bordered" id="example2">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Apellido</th>
                                         <th>Direccion</th>
                                         <th>Correo</th>
+                                        <th>Estatus</th>
                                         <th data-hide="all" data-breakpoints="all">Ciudad</th>
                                         <th data-hide="all" data-breakpoints="all">País</th>
                                         <th data-type="html">Imagen</th>
                                         <th data-hide="all" data-breakpoints="all">Fecha de nacimiento</th>
-                                        <th data-hide="all" data-breakpoints="all">Comentario</th>
                                         <th data-type="html">Opciones</th>
                                     </tr>
                                 </thead>
@@ -83,21 +80,22 @@
                                         <td>{{ $patient->surname }}</td>
                                         <td>{{ $patient->address }}</td>
                                         <td>{{ $patient->email }}</td>
+                                        <td>{{ $patient->status ? 'Activo' : 'Inactivo'}}</td>
                                         <td>{{ $patient->city }}</td>
                                         <td>{{ $patient->country }}</td>
                                         <td><img src="{{ asset('patient/images') }}/{{ $patient->image }} " class="image"></td>
                                         <td>{{ $patient->birthdate }}</td>
-                                        <td>{{ $patient->comment }}</td>
                                         <td>
+                                            @if($patient->status)
                                             <button type="button" class="btn btn-success" data-cita="{{ $patient->id }}"
                                                     data-name="{{ $patient->name }}"
                                                     data-surname="{{ $patient->surname }}"><i class="ti-alarm-clock" data-backdrop="false"></i> Agendar Cita</button>
-
+    
                                                     <button type="button"  class="btn btn-info" data-notificacion="{{ $patient->id }}" data-name="{{ $patient->name }}"
                                                     data-surname="{{ $patient->surname }}"><i class="ti-alarm-clock"></i>Notificar proxima cita</button>
-                                                    
+                                                                                            
                                                     <button type="button"  class="btn btn-primary" data-recipe="{{ $patient->id }}"><i class="ti-alarm-clock"></i>Enviar recipe medico</button>
-
+                                            @endif
                                                     <button type="button" class="btn btn-primary" data-id="{{ $patient->id }}"
                                                     data-name="{{ $patient->name }}"
                                                     data-surname="{{ $patient->surname }}"
@@ -109,7 +107,22 @@
                                                     data-birthdate="{{ $patient->birthdate }}"
                                                     data-comment="{{ $patient->comment }}"><i class="fa fa-pencil" data-backdrop="false"></i></button>
                                             <button type="button"  class="btn btn-danger" data-delete="{{ $patient->id }}" data-name="{{ $patient->name }}" data-surname="{{ $patient->surname }}" data-backdrop="false"><i class="fa fa-trash"></i></button>
-                                            <a href="{{url('diagnostico-'.$patient->id)}}" class="btn btn-info"><i class="fa fa-eye" data-backdrop="false"></i> Diagnosticar</a>
+                                            
+                                            @if($patient->status)
+                                                <button type="button"  class="btn btn-danger" data-deactivate="{{ $patient->id }}" data-name="{{ $patient->name }}" data-surname="{{ $patient->surname }}" data-backdrop="false"><i class="fa fa-chevron-left"></i>
+                                                    Desactivar paciente
+                                                </button>
+                                            @endif
+
+                                            @if(!$patient->status)
+                                                <button type="button"  class="btn btn-primary" data-activate="{{ $patient->id }}" data-name="{{ $patient->name }}" data-surname="{{ $patient->surname }}" data-backdrop="false"><i class="fa fa-chevron-left"></i>
+                                                    Activar paciente
+                                                </button>
+                                            @endif
+                                            
+                                            @if($patient->status)
+                                                <a href="{{url('diagnostico-'.$patient->id)}}" class="btn btn-info"><i class="fa fa-eye" data-backdrop="false"></i> Diagnosticar</a>
+                                            @endif
                                             <button type="button"  class="btn btn-success" data-diagnosticos="{{ $patient->id }}" data-name="{{ $patient->name }}" data-surname="{{ $patient->surname }}" data-backdrop="false"><i class="fa fa-eye"></i>Historial</button>
                                         </td>
                                     </tr>
@@ -466,6 +479,64 @@
         </div>
     </div>
 
+    <div id="modalDesactivar" class="modal fade in">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Desactivar paciente</h4>
+                </div>
+                <form id="formDesactivar" action="{{ url('pacientes/desactivar') }}" method="POST">
+                    <div class="modal-body">
+
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                        <input type="hidden" name="id" />
+                        <div class="form-group">
+                            <label for="nombreEliminar">¿Desea desactivar el siguiente paciente?</label>
+                            <input type="text" readonly class="form-control" name="nombreDesactivar"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group pull-left">
+                            <button class="btn btn-danger pull-left" data-dismiss="modal"><span class="ti-close"></span> Cancelar</button>
+                        </div>
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-primary"><span class="ti-check" aria-hidden="true"></span> Aceptar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalActivar" class="modal fade in">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Activar paciente</h4>
+                </div>
+                <form id="formActivar" action="{{ url('pacientes/activar') }}" method="POST">
+                    <div class="modal-body">
+
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                        <input type="hidden" name="id" />
+                        <div class="form-group">
+                            <label for="nombreEliminar">¿Desea activar nuevamente el siguiente paciente?</label>
+                            <input type="text" readonly class="form-control" name="nombreActivar"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group pull-left">
+                            <button class="btn btn-danger pull-left" data-dismiss="modal"><span class="ti-close"></span> Cancelar</button>
+                        </div>
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-primary"><span class="ti-check" aria-hidden="true"></span> Aceptar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div id="modalCita" class="modal fade in">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -521,4 +592,34 @@
 @section('scripts')
     <script src="{{ asset('assets/js/footable.min.js') }}"></script>
     <script src="{{ asset('patient/js/patient.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+
+            $('#example2').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : false,
+              'info'        : true,
+              'autoWidth'   : true,
+              "language": {
+                    "lengthMenu": "Mostrar _MENU_",
+                    "search": "Buscar",
+                    "info": "Mostrar pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No exixten registros",
+                    'Previus': 'Anterior',
+                    "emptyTable": 'No hay datos',
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Ultimo",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }, 
+
+                }
+            })
+
+        }) 
+          
+    </script>
 @endsection

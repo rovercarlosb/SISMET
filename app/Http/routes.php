@@ -11,6 +11,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/pacientes/registrar', 'PatientController@store');
     Route::post('/pacientes/modificar', 'PatientController@edit');
     Route::post('/pacientes/eliminar', 'PatientController@delete');
+    Route::post('/pacientes/desactivar', 'PatientController@deactivate');
+    Route::post('/pacientes/activar', 'PatientController@activate');
+
 
 //Appoinment routes
     Route::get('/citas', 'AppoinmentController@index');
@@ -74,7 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('enfermedades/recomendaciones/{ruleId}','DiagnosisController@diseaseRecommendations');
 
     // Guardar diagnóstico
-    Route::get('diagnostico/guardar/{patientId}/{ruleId}','DiagnosisController@saveDiagnostic');
+    Route::post('diagnostico/guardar/{patientId}/{ruleId}','DiagnosisController@saveDiagnostic');
 
     Route::post('diagnostico/forwardChaining','DiagnosisController@forwardChaining');
 

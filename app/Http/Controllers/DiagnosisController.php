@@ -313,20 +313,32 @@ class DiagnosisController extends Controller
         return $recommendations;
     }
 
-    public function saveDiagnostic( $patientId, $ruleId )
+    public function saveDiagnostic( $patientId, $ruleId, Request $request )
     {
         $history = History::where('rule_id',$ruleId)->where('patient_id',$patientId)->first();
         if( $history <> null )
             return ['success'=>'false','message'=>'El paciente ya ha sido diagnosticado dicha enfermedad.'];
 
         $date = new Carbon();
-        $date->tz = 'America/Lima';
+        $date->tz = 'America/Caracas';
         $date = $date->format('Y-m-d');
+
+        if( $request->file('recipe') )
+        {
+            $path = public_path().'/patient/images';
+            $extension = $request->file('recipe')->getClientOriginalExtension();
+            $fileName = $patientId . '.' . $extension;
+            $request->file('recipe')->move($path, $fileName);
+        }else{
+
+            $fileName = null;
+        }
 
         $history = History::create([
             'patient_id'=>$patientId,
             'date'=>$date,
             'rule_id'=>$ruleId,
+            'recipe' => $fileName,
             'user_id'=>Auth()->user()->id
         ]);
 
