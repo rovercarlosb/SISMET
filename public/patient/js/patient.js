@@ -11,7 +11,6 @@ function principal(){
     $modalDiagnosticos = $('#modalDiagnosticos');
     $modalCita = $('#modalCita');
     $modalNotificar = $('#modalNotificar');
-    $modalRecipe = $('#modalRecipe');
 
     $('[data-id]').on('click', mostrarEditar);
     $('[data-cita]').on('click', mostrarCita);
@@ -20,7 +19,6 @@ function principal(){
     $('[data-activate]').on('click', mostrarActivar);
     $('[data-diagnosticos]').on('click', showDiagnosticos);
     $('[data-notificacion]').on('click', showCita);
-    $('[data-recipe]').on('click', showRecipe);
 
     $('#formEditar').on('submit', updatePatient);
     $('#formRegistrar').on('submit', registerPatient);
@@ -28,9 +26,11 @@ function principal(){
     $('#formDesactivar').on('submit', deactivatePatient);
     $('#formActivar').on('submit', activatePatient);
     $('#formCita').on('submit',registerCita);
-    $('#formRecipe').on('submit',sendRecipe);
+    // $('#formRecipe').on('submit',sendRecipe);
 
     $('#btnNew').on('click', mostrarNuevo);
+    $('#btnCitas').on('click', mailCitas);
+
 }
 
 var $modalDiagnosticos, $modalNotificar;
@@ -45,15 +45,15 @@ function mostrarCita(){
 
 }
 
-function showRecipe(){
+// function showRecipe(){
 
-    var id = $(this).data('recipe');
+//     var id = $(this).data('recipe');
 
-    $modalRecipe.find('[name="id"]').val(id);
+//     $modalRecipe.find('[name="id"]').val(id);
 
-    $modalRecipe.modal('show');
+//     $modalRecipe.modal('show');
 
-}
+// }
 
 
 function registerCita(){
@@ -79,6 +79,27 @@ function registerCita(){
             }
         });
 }
+
+function mailCitas(){
+
+    // event.preventDefault();
+    showmessage('Espere...',2);
+
+    $.ajax({
+            url: $('#btnCitas').data("url"),
+        })
+        .done(function( response ) {
+            if(response.error)
+                showmessage(response.message,1);
+            else{
+                showmessage(response.message,0);
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
+            }
+        });
+}
+
 
 function showDiagnosticos() {
     var name = $(this).data('name');
@@ -252,29 +273,29 @@ function updatePatient() {
         });
 }
 
-function sendRecipe() {
-    event.preventDefault();
-    var url =  $('#formRecipe').attr('action');
-    $.ajax({
-        url: url,
-        data: new FormData(this),
-        dataType: "JSON",
-        processData: false,
-        contentType: false,
-        method: 'POST'
-    })
-        .done(function( response ) {
+// function sendRecipe() {
+//     event.preventDefault();
+//     var url =  $('#formRecipe').attr('action');
+//     $.ajax({
+//         url: url,
+//         data: new FormData(this),
+//         dataType: "JSON",
+//         processData: false,
+//         contentType: false,
+//         method: 'POST'
+//     })
+//         .done(function( response ) {
 
-            if(response.error)
-                showmessage(response.message,1);
-            else{
-                showmessage(response.message,0);
-                setTimeout(function(){
-                    location.reload();
-                }, 3000);
-            }
-        });
-}
+//             if(response.error)
+//                 showmessage(response.message,1);
+//             else{
+//                 showmessage(response.message,0);
+//                 setTimeout(function(){
+//                     location.reload();
+//                 }, 3000);
+//             }
+//         });
+// }
 
 function registerPatient() {
     event.preventDefault();
@@ -382,7 +403,13 @@ function showmessage( message, error ){
     {
         icon = 'ti-thumb-down';
         type = 'danger';
+    }else if(error=2)
+    {
+        var icon = 'ti-thumb-up';
+        var type = 'info';
+
     }
+
 
     $.notify({
         icon: icon,

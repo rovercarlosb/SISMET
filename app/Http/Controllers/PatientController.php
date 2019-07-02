@@ -7,6 +7,7 @@ use App\History;
 use App\Http\Requests;
 use App\Patient;
 use App\Rule;
+use App\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -33,30 +34,53 @@ class PatientController extends Controller
         return redirect()->route('pacientes')->with(['mensaje' => 'El correo se envio satisfactoriamente']);
     }
 
-    public function recipeMail(Request $request){
+    public function citasMail(){
 
-        $paciente = Patient::find($request->get('id'));
+        $appointments = Appointment::where('status', '=', true)->get();
 
-        $path = public_path().'/patient/images';
-        $extension = $request->file('image')->getClientOriginalExtension();
-        $fileName = $paciente->id . '.' . $extension;
-        $request->file('image')->move($path, $fileName);
+        if(count($appointments) < 1){
 
-        Mail::send('emails.recipe', ['paciente' => $paciente], function ($message) use ($path,$paciente,$fileName) {
+            return response()->json(['error' => true, 'message' => 'Actualmente no hay citas activas para ningun paciente']);
 
-           $message->from('carlosb20052009@gmail.com', 'SISMET');
+        }else{  
+
+            foreach ($appointments as $appointment) {
+
+                 Mail::send('emails.test', ['appointment' => $appointment], function ($message) use ($appointment) {
+
+                    $message->from('carlosb20052009@gmail.com', 'SISMET');
  
-           //asunto
-           $message->subject('SISMET | RECIPE MEDICO');
+                    //asunto
+                     $message->subject('SISMET | NOTIFICACION CITA MEDICA PACIENTE '.$appointment->patient->name.' '.$appointment->patient->surname);
+ 
+                    //receptor
+                    $message->to($appointment->patient->email, $appointment->patient->name);
+                 });
+
+            }
+
+             return response()->json(['error' => false, 'message' => 'Todas las citas notificadas correctamente']);
+        }
+        // $path = public_path().'/patient/images';
+        // $extension = $request->file('image')->getClientOriginalExtension();
+        // $fileName = $paciente->id . '.' . $extension;
+        // $request->file('image')->move($path, $fileName);
+
+        // Mail::send('emails.recipe', ['paciente' => $paciente], function ($message) use ($path,$paciente,$fileName) {
+
+        //    $message->from('carlosb20052009@gmail.com', 'SISMET');
+ 
+        //    //asunto
+        //    $message->subject('SISMET | RECIPE MEDICO');
 
     
-           $message->attach($path.'/'.$fileName);
+        //    $message->attach($path.'/'.$fileName);
 
-           //receptor
-           $message->to($paciente->email, $paciente->name.' '.$paciente->surname);
-        });
+        //    //receptor
+        //    $message->to($paciente->email, $paciente->name.' '.$paciente->surname);
+        // });
 
-        return response()->json(['error' => false, 'message' => 'Recipe enviado correctamente']);
+        
 
     }
 

@@ -42,9 +42,6 @@
                         <h2><a data-registrar class="btn btn-success"><i class="fa fa-plus-square-o"></i> Nueva cita</a></h2>
                     </div>
                     <div class="col-md-9 form-inline margen">
-                        <div class="col-md-8 input-group ">
-                            <span class="input-group-addon">Filtro</span><input type="text" format id="search" class="form-control" placeholder="Búsqueda personalizada ...">
-                        </div>
 
                         <div class="col-md-3 pull-right">
                             <a href="{{ url('home') }}" class="btn btn-dark" type="button"><i class="fa fa-lock"></i> Volver</a>
