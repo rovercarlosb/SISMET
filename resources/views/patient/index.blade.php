@@ -107,6 +107,8 @@
                                                     data-birthdate="{{ $patient->birthdate }}"
                                                     data-comment="{{ $patient->comment }}"><i class="fa fa-pencil" data-backdrop="false"></i></button>
                                             <button type="button"  class="btn btn-danger" data-delete="{{ $patient->id }}" data-name="{{ $patient->name }}" data-surname="{{ $patient->surname }}" data-backdrop="false"><i class="fa fa-trash"></i></button>
+
+                                            <a class="btn btn-success" href="{{url('paciente/perfil/'.$patient->id)}}">Ver perfil</a>
                                             
                                             @if($patient->status)
                                                 <button type="button"  class="btn btn-danger" data-deactivate="{{ $patient->id }}" data-name="{{ $patient->name }}" data-surname="{{ $patient->surname }}" data-backdrop="false"><i class="fa fa-chevron-left"></i>

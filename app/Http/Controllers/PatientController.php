@@ -20,18 +20,35 @@ class PatientController extends Controller
 
         $message = true;
 
-        Mail::send('pdf.diagnostico', ['historia' => $historia, 'message' => $message], function ($message) use ($historia) {
+        $path = public_path().'/patient/images';
+
+
+        Mail::send('pdf.diagnostico', ['historia' => $historia, 'message' => $message], function ($message) use ($historia, $path) {
 
            $message->from('carlosb20052009@gmail.com', 'SISMET');
  
            //asunto
            $message->subject('SISMET | HISTORIAL MEDICO');
- 
+
+           if ($historia->recipe != null) {
+
+               $message->attach($path.'/'.$historia->recipe);
+           }
+
            //receptor
            $message->to($historia->patients[0]->email, $historia->patients[0]->name);
         });
 
         return redirect()->route('pacientes')->with(['mensaje' => 'El correo se envio satisfactoriamente']);
+    }
+
+    public function profile($id){
+
+        $patient = Patient::find($id);
+
+        $appointment = Appointment::where('patient_id','=' ,$patient->id)->where('status','=', true)->first();
+
+        return view('profile.index',['patient' => $patient, 'appointment' => $appointment]);
     }
 
     public function citasMail(){

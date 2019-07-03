@@ -1,6 +1,6 @@
 @extends('layouts.general')
 
-@section('title','Citas')
+@section('title','Perfil del paciente')
 
 @section('styles')
     <style>
@@ -37,70 +37,130 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-3">
-                        <h2><a data-registrar class="btn btn-success"><i class="fa fa-plus-square-o"></i> Nueva cita</a></h2>
-                    </div>
-                    <div class="col-md-9 form-inline margen">
-
-                        <div class="col-md-3 pull-right">
-                            <a href="{{ url('home') }}" class="btn btn-dark" type="button"><i class="fa fa-lock"></i> Volver</a>
-                        </div>
-                    </div>
+                <div class="col-md-10">
+                    <h2>Perfil del paciente {{$patient->name}} {{$patient->surname}}</h2>
+                </div>
+                <div class="col-md-2">   
+                    <img src="{{asset('patient/images/'.$patient->image)}}" height="80px" width="80px" class="pull right">
                 </div>
             </div>
+            
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <p><h4>Dirección:</h4> {{$patient->address}} </p>
+                </div>
+                <div class="col-md-4">
+                    <p><h4>Correo:</h4> {{$patient->email}} </p>
+                </div>
+                <div class="col-md-4">
+                    <p><h4>Ciudad:</h4> {{$patient->city}} </p>
+                </div>
+            </div>
+
+            <br>
 
             <div class="row">
-                <div class="col-md-12 separator">
-                    <div class="card">
-                        <div class="header">
-                            <h4 class="title">Citas</h4>
-                        </div>
-                        <div class="content">
-                            <table class="table table-striped table-bordered" id="example2">
-                                <thead>
-                                <tr>
-                                    <th>Paciente</th>
-                                    <th>Fecha </th>
-                                    <th>Hora </th>
-                                    <th>Estatus</th>
-                                    <th data-type="html">Opciones</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tabla">
-                                @foreach($appoinments as $appoinment)
-                                    <tr>
-                                        @php
-                                          $date = date_create($appoinment->hour);
-                                          $fecha = date_create($appoinment->date);
-                                        @endphp
-                                        <td>{{ $appoinment->patient->name }}</td>
-                                        <td>{{ date_format($fecha, 'd-m-Y')}}</td>
-                                        <td>{{ date_format($date,'g:i A')}}</td>
-                                        <td>{{$appoinment->status ? 'Activo' : 'Finalizada'}}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-success" data-edit="{{ $appoinment->id }}" data-patient="{{ $appoinment->patient->id }}" data-date="{{ $appoinment->date }}"
-                                                data-hour="{{ $appoinment->hour }}" data-status="{{$appoinment->status}}">
-                                                <i class="fa fa-pencil"></i>Editar
-                                            </button>
-                                            <button type="button" class="btn btn-danger"  data-delete="{{ $appoinment->id }}">
-                                                <i class="fa fa-trash"></i>Eliminar
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                            {!! $appoinments->render() !!}
-                        </div>
-                    </div>
+                <div class="col-md-4">
+                    <p><h4>Pais:</h4> {{$patient->country}} </p>
+                </div>
+                <div class="col-md-4">
+                    <p><h4>Comentario:</h4> {{$patient->comment}} </p>
+                </div>
+                <div class="col-md-4">
+                    <p><h4>Fecha de nacimento:</h4> {{$patient->birthdate}} </p>
                 </div>
             </div>
+
+            <br>
+            
+            @if(isset($patient->history))
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Diagnosticos realizados: {{count($patient->history)}}</h3>
+                </div>
+            </div>
+            
+            <br>
+
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-2">
+                    <h4 style="text-decoration: underline;">Ultimo diagnostico</h4>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            
+            <br>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <p><h4>Fecha:</h4> {{$patient->history[count($patient->history) - 1]->date}} </p>
+                </div>
+                <div class="col-md-4">
+                    <p><h4>Enfermedad:</h4> {{$patient->history[count($patient->history) - 1]->rules[0]->diseases->name}} </p>
+                </div>
+                <div class="col-md-4">
+                    <p><h4>Medico encargado:</h4> {{$patient->history[count($patient->history) - 1]->users[0]->name}} </p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    
+                @if($patient->history[count($patient->history) - 1]->recipe != null)
+                    <h4>Recipe</h4>
+                    <img src="{{asset('patient/images/'.$patient->history[count($patient->history) - 1]->recipe)}}" height="400px" width="400px" class="pull right">
+                @endif
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+           
+            @else
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3><b>Diagnosticos realizados:</b> 0</h3>
+                </div>
+            </div>
+    
+            @endif
+            
+            <br>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Proxima cita: </h3>
+                </div>
+            </div>
+
+            <br>
+            
+            @if($appointment != null)
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><h4>Fecha:</h4> {{$appointment->date}} </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><h4>Hora:</h4> {{$appointment->hour}} </p>
+                    </div>
+                </div>
+            
+            @else
+
+                <div class="row">
+                    <div class="col-md-4"><h4><b>Ninguna</b></h4></div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"></div>
+                </div>
+
+            @endif
         </div>
     </div>
 
-    <div id="modalRegistrar" class="modal fade in">
+   {{--  <div id="modalRegistrar" class="modal fade in">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -224,7 +284,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 @endsection
 
@@ -234,30 +294,6 @@
     <script src="{{ asset('appoinment/index.js') }}"></script>
         <script>
         $(document).ready(function(){
-
-            $('#example2').DataTable({
-              'paging'      : true,
-              'lengthChange': true,
-              'searching'   : true,
-              'ordering'    : false,
-              'info'        : true,
-              'autoWidth'   : true,
-              "language": {
-                    "lengthMenu": "Mostrar _MENU_",
-                    "search": "Buscar",
-                    "info": "Mostrar pagina _PAGE_ de _PAGES_",
-                    "infoEmpty": "No exixten registros",
-                    'Previus': 'Anterior',
-                    "emptyTable": 'No hay datos',
-                    "paginate": {
-                        "first":      "Primero",
-                        "last":       "Ultimo",
-                        "next":       "Próximo",
-                        "previous":   "Anterior"
-                    }, 
-
-                }
-            })
 
         }) 
     </script>

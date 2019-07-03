@@ -13,7 +13,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/pacientes/eliminar', 'PatientController@delete');
     Route::post('/pacientes/desactivar', 'PatientController@deactivate');
     Route::post('/pacientes/activar', 'PatientController@activate');
-
+    Route::get('/paciente/perfil/{id}', 'PatientController@profile')->name('profile');
 
 //Appoinment routes
     Route::get('/citas', 'AppoinmentController@index');
